@@ -1,0 +1,40 @@
+﻿@code
+{
+	[Parameter]
+	public string Left { get; set; } = "";
+	[Parameter]
+	public EventCallback<string> LeftChanged { get; set; }
+	[Parameter]
+	public string Right { get; set; } = "";
+	[Parameter]
+	public EventCallback<string> RightChanged { get; set; }
+
+	private void Equate()
+	{
+		if (Left is IEquatable<string> left && Right is IEquatable<string> right)
+		{
+			bool equated1 = left != right;
+			bool equated2 = left == right;
+			bool equated3 = !left.Equals(right);
+			bool equated4 = left.Equals(right);
+		}
+	}
+}
+
+@{
+	IEquatable<string> equatableLeft = Left as IEquatable<string>;
+	IEquatable<string> equatableRight = Right as IEquatable<string>;
+
+	Equate(); // for using a breakpoint.
+}
+
+<div>
+	<textarea @bind="Left" @bind:event="oninput" rows="3" />
+	<textarea @bind="Right" @bind:event="oninput" rows="3" />
+</div>
+<ul>
+	<li>strings: @(Left) != @(Right) : @(Left != Right)</li>
+	<li>strings: @(Left) == @(Right) : @(Left == Right)</li>
+	<li>Equatables: @(equatableLeft) != @(equatableRight) : @(equatableLeft != equatableRight)</li>
+	<li>Equatables: @(equatableLeft) == @(equatableRight) : @(equatableLeft == equatableRight)</li>
+</ul>
